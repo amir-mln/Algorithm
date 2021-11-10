@@ -38,8 +38,6 @@ function threeNumSum(arr, target) {
   return sums;
 }
 
-threeNumSum([12, 3, 1, 2, -6, 5, -8, 6], 0);
-
 //algoExpert's solution
 // O(n^2) time | O(n) space
 function threeNumberSum(array, targetSum) {
@@ -62,6 +60,59 @@ function threeNumberSum(array, targetSum) {
     }
   }
   return triplets;
+}
+
+// new solution
+// all combinations
+function threeNumberSum(numbers, target, reductionCount = 0) {
+  if (reductionCount > 3) return null;
+  if (reductionCount == 3 && target == 0) return [[]];
+
+  let combinations = [];
+
+  for (let i = 0; i < numbers.length; i++) {
+    const newNumbers = [...numbers.slice(0, i), ...numbers.slice(i + 1)];
+    const newTarget = target - numbers[i];
+    const combos = threeNumberSum(newNumbers, newTarget, reductionCount + 1);
+    if (combos !== null) {
+      const transCombos = combos.map((c) => [numbers[i], ...c]);
+      combinations.push(...transCombos);
+    }
+  }
+
+  return combinations;
+}
+
+// the first occurence
+function threeNumberSum(numbers, target, reductionCount = 0) {
+  if (reductionCount > 3) return null;
+  if (reductionCount == 3 && target == 0) return [];
+
+  for (let i = 0; i < numbers.length; i++) {
+    const newNumbers = [...numbers.slice(0, i), ...numbers.slice(i + 1)];
+    const newTarget = target - numbers[i];
+    const combos = threeNumberSum(newNumbers, newTarget, reductionCount + 1);
+    if (combos !== null) {
+      return [numbers[i], ...combos];
+    }
+  }
+
+  return null;
+}
+
+// return true/false
+
+function threeNumberSum(numbers, target, reductionCount = 0) {
+  if (reductionCount > 3) return null;
+  if (reductionCount == 3 && target == 0) return true;
+
+  for (let i = 0; i < numbers.length; i++) {
+    const newNumbers = [...numbers.slice(0, i), ...numbers.slice(i + 1)];
+    const newTarget = target - numbers[i];
+    if (threeNumberSum(newNumbers, newTarget, reductionCount + 1)) return true;
+  }
+
+  return false;
 }
 
 threeNumberSum([12, 3, 1, 2, -6, 5, -8, 6], 0);

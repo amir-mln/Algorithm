@@ -6,7 +6,7 @@ function breadthFirstSearch(headNode, arr = [], index = 0) {
   arr[index].push(headNode.value);
 
   for (const child of headNode.children) {
-    breadthFirstSearch(child);
+    breadthFirstSearch(child, index + 1);
   }
 
   if (index == 0) return arr.flat(1);

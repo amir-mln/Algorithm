@@ -1,14 +1,14 @@
 function isMonotonic(arr) {
   let dir = null;
-  let secondNonEqualIndex = 1;
+  let dirCheckIndex = 1;
 
   while (!dir) {
-    const diff = arr[secondNonEqualIndex] - arr[0];
+    const diff = arr[dirCheckIndex] - arr[0];
     if (diff == 0) {
-      secondNonEqualIndex++;
+      dirCheckIndex++;
       continue;
     }
-    if (secondNonEqualIndex == arr.length) {
+    if (dirCheckIndex == arr.length) {
       break;
     }
     dir = diff > 0 ? 1 : -1;
