@@ -5,7 +5,7 @@
 
 // we need to first find the smallest and largest anomalies (a number that has made the array unsorted). then we find the appropriate place for our smallest and largest anomalies and simply return the index of those places
 
-// my solution based on video explanation
+// my implementation based on video explanation
 function findSubarray(numbers) {
   const anomalies = [];
   let smallestIndex, smallest, largestIndex, largest;
