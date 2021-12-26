@@ -16,7 +16,7 @@ function spiralTraversal(arr) {
   while (traversedArr.length < arrTrueLength) {
     traversedArr.push(arr[y][x]);
 
-    if (x == 0 && y == 00) roof++;
+    if (x == 0 && y == 0) roof++;
 
     if (y == roof && x < rWall) {
       if (x == lWall || (lWall == -1 && x == 0)) rWall--;
