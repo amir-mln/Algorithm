@@ -1,81 +1,36 @@
-// my solution
-// O(n)
-function longestPeak(arr) {
-  let prevDir;
-  let peaks = [];
+// redoing Medium exercises
+// input => numbers: Number[]
+// output => Number[]
+// we need to find all the peaks inside the numbers. a peak is defined as a sequence of numbers that rise to a peak value an then fall. So they basically increase and decrease
+function longestPeak(numbers) {
   let peak = [];
-  for (let i = 0; i < arr.length; i++) {
-    let nextDir = arr[i] == arr[i + 1] ? 0 : arr[i] < arr[i + 1] ? "+" : "-";
+  let longestPeak = [];
+  for (let i = 1; i < numbers.length; i++) {
+    const diff = Math.sign(numbers[i] - numbers[i - 1]);
+    const prevDif = Math.sign(numbers[i - 1] - numbers[i - 2]);
 
-    // equal numbers
-    if (!nextDir) {
-      peak = [];
-    }
-
-    // the first iteration
-    if (!prevDir) {
-      prevDir = nextDir;
-    }
-
-    // rising to the peak as we were before
-    if (nextDir == "+" && prevDir == nextDir) {
-      peak.push(arr[i]);
-    }
-
-    // falling to the deep as we were before
-    if (nextDir == "-" && prevDir == nextDir) {
-      // if peak array has length of zero we should not add anything since we are just falling
-      peak.length && peak.push(arr[i]);
-
-      // if we have reached the...
-      i + 1 == arr.length && peaks.push(peak);
-    }
-
-    // we are at the bottom, we will rise next
-    if (nextDir == "+" && prevDir == "-") {
-      // we were at peak before and have finished one peak
-      if (peak.length) {
-        peak.push(arr[i]);
-        peaks.push(peak);
-        peak = [];
+    if (
+      prevDif == diff ||
+      (!prevDif && diff >= 0) ||
+      (diff < 0 && prevDif >= 0)
+    ) {
+      peak.push(numbers[i - 1]);
+      if (i + 1 == numbers.length) {
+        peak.push(numbers[i]);
+        longestPeak = longestPeak.length > peak.length ? longestPeak : peak;
       }
-      // to start the next rise
-      peak.push(arr[i]);
-    }
-
-    // we are at the top, we will fall next
-    if (nextDir == "-" && prevDir == "+") {
-      peak.push(arr[i]);
-    }
-    prevDir = nextDir;
-  }
-
-  return peaks;
-}
-
-// O(n) time | O(1) space - where n is the length of the input array
-function longestPeak(array) {
-  let longestPeakLength = 0;
-  let i = 1;
-  while (i < array.length - 1) {
-    const isPeak = array[i - 1] < array[i] && array[i + 1] < array[i];
-    if (!isPeak) {
-      i++;
       continue;
     }
-    let leftIdx = i - 2;
-    while (leftIdx >= 0 && array[leftIdx] < array[leftIdx + 1]) {
-      leftIdx--;
+
+    if (prevDif <= 0 && diff > 0) {
+      peak.push(numbers[i - 1]);
+      longestPeak = longestPeak.length > peak.length ? longestPeak : peak;
+      peak = [numbers[i - 1]];
+      continue;
     }
-    let rightIdx = i + 2;
-    while (rightIdx < array.length && array[rightIdx] < array[rightIdx - 1]) {
-      rightIdx++;
-    }
-    const currentPeakLength = rightIdx - leftIdx - 1;
-    longestPeakLength = Math.max(longestPeakLength, currentPeakLength);
-    i = rightIdx;
   }
-  return longestPeakLength;
+
+  return longestPeak;
 }
 
 longestPeak([1, 2, 3, 2, 1]);

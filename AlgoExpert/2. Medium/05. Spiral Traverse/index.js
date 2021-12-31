@@ -1,67 +1,55 @@
+// redoing Medium exercises
+// input => a 2D array, sub arrays all have the same length
+// output => the result of traversing 2D array in a spiral way
 // My Solution
-// o(n)
-function spiralTraversal(arr) {
-  const traversedArr = [];
-  let arrTrueLength = 0;
-  let roof = -1;
-  let rWall = arr[0].length;
-  let floor = arr.length;
-  let lWall = -1;
-  let x = (y = 0);
+// o(n): time O(n): space
+function spiralTraversal(matrix) {
+  const array = [];
+  const matrixMembers = matrix.reduce(
+    (acc, subArray) => acc + subArray.length,
+    0
+  );
+  let topEdge = 0;
+  let rightEdge = matrix[0].length - 1;
+  let bottomEdge = matrix.length - 1;
+  let leftEdge = 0;
+  let x = 0;
+  let y = 0;
 
-  for (const subArr of arr) {
-    arrTrueLength += subArr.length;
+  while (array.length < matrixMembers) {
+    array.push(matrix[y][x]);
+    if (y == topEdge && x < rightEdge) {
+      x += 1;
+      continue;
+    } else if (x == rightEdge && y < bottomEdge) {
+      y += 1;
+      continue;
+    } else if (y == bottomEdge && x > leftEdge) {
+      x += -1;
+      continue;
+    } else if (x == leftEdge && y > topEdge) {
+      if (y - 1 == topEdge) {
+        topEdge += 1;
+        rightEdge += -1;
+        bottomEdge += -1;
+        leftEdge += 1;
+        x += 1;
+        continue;
+      }
+      y += -1;
+      continue;
+    }
   }
 
-  while (traversedArr.length < arrTrueLength) {
-    traversedArr.push(arr[y][x]);
-
-    if (x == 0 && y == 0) roof++;
-
-    if (y == roof && x < rWall) {
-      if (x == lWall || (lWall == -1 && x == 0)) rWall--;
-      x++;
-      continue;
-    }
-    if (y < floor && x == rWall) {
-      if (y == roof) floor--;
-      y++;
-      continue;
-    }
-    if (y == floor && x > lWall) {
-      if (x == rWall) lWall++;
-      x--;
-      continue;
-    }
-    if (y > roof && x == lWall) {
-      if (y == floor) roof++;
-      y--;
-      continue;
-    }
-  }
-
-  return traversedArr;
+  return array;
 }
 
-spiralTraversal([
+spiralTraverse([
   ["a", "b", "c", "d"],
   ["n", "o", "p", "e"],
   ["m", "t", "q", "f"],
   ["l", "s", "r", "g"],
   ["k", "j", "i", "h"],
-]);
-
-// prettier-ignore
-spiralTraversal([
-  [1, 2, 3, 4, 5, 6, 7, 8, 9],
-  [2, 1, 2, 3, 4, 5, 6, 7, 8],
-  [3, 8, 9, 8, 7, 6, 5, 8, 7],
-  [4, 7, 8, 9, 8, 7, 4, 9, 6],
-  [5, 6, 7, 2, 1, 6, 3, 8, 5],
-  [6, 5, 6, 3, 4, 5, 2, 7, 4],
-  [7, 4, 5, 4, 3, 2, 1, 6, 3],
-  [8, 3, 2, 1, 2, 3, 4, 5, 2],
-  [9, 8, 7, 6, 5, 4, 3, 2, 1],
 ]);
 
 // AlgoExpert's Solution

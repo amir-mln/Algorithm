@@ -1,180 +1,106 @@
-// AlgoExpert
+// redoing Medium exercises
+// just a simple Binary Search Tree
 
-class BST {
-  constructor(value) {
-    this.value = value;
-    this.left = null;
-    this.right = null;
-  }
-  // Average: O(log(n)) time | O(1) space
-  // Worst: O(n) time | O(1) space
-  insert(value) {
-    let currentNode = this;
+function Node(value) {
+  this.value = value;
+  this.left;
+  this.right;
+}
+
+function BST(node) {
+  this.root = node;
+
+  this.insert = function (value) {
+    let currentNode = this.root;
     while (true) {
       if (value < currentNode.value) {
-        if (currentNode.left === null) {
-          currentNode.left = new BST(value);
-          break;
-        } else {
-          currentNode = currentNode.left;
+        if (!currentNode.left) {
+          currentNode.left = new Node(value);
+          return this;
         }
+
+        currentNode = currentNode.left;
+        continue;
       } else {
-        if (currentNode.right === null) {
-          currentNode.right = new BST(value);
-          break;
-        } else {
-          currentNode = currentNode.right;
+        if (!currentNode.right) {
+          currentNode.right = new Node(value);
+          return this;
         }
+
+        currentNode = currentNode.right;
+        continue;
       }
     }
-    return this;
-  }
-  // Average: O(log(n)) time | O(1) space
-  // Worst: O(n) time | O(1) space
-  contains(value) {
-    let currentNode = this;
-    while (currentNode !== null) {
-      if (value < currentNode.value) {
-        currentNode = currentNode.left;
+  };
+
+  this.includes = function (value) {
+    let currentNode = this.root;
+    while (true) {
+      if (!currentNode) {
+        return false;
       } else if (value > currentNode.value) {
         currentNode = currentNode.right;
-      } else {
-        return true;
-      }
-    }
-    return false;
-  }
-  // Average: O(log(n)) time | O(1) space
-  // Worst: O(n) time | O(1) space
-  remove(value, parentNode = null) {
-    let currentNode = this;
-    while (currentNode !== null) {
-      if (value < currentNode.value) {
-        parentNode = currentNode;
+        continue;
+      } else if (value < currentNode.value) {
         currentNode = currentNode.left;
-      } else if (value > currentNode.value) {
-        parentNode = currentNode;
-        currentNode = currentNode.right;
+        continue;
       } else {
-        if (currentNode.left !== null && currentNode.right !== null) {
-          currentNode.value = currentNode.right.getMinValue();
-          currentNode.right.remove(currentNode.value, currentNode);
-        } else if (parentNode === null) {
-          if (currentNode.left !== null) {
-            currentNode.value = currentNode.left.value;
-            currentNode.right = currentNode.left.right;
-            currentNode.left = currentNode.left.left;
-          } else if (currentNode.right !== null) {
-            currentNode.value = currentNode.right.value;
-            currentNode.left = currentNode.right.left;
-            currentNode.right = currentNode.right.right;
-          } else {
-            // This is a single-node tree; do nothing.
-          }
-        } else if (parentNode.left === currentNode) {
-          parentNode.left =
-            currentNode.left !== null ? currentNode.left : current;
-        } else if (parentNode.right === currentNode) {
-          parentNode.right =
-            currentNode.left !== null ? currentNode.left : curren;
-        }
-        break;
+        return currentNode;
       }
     }
-    return this;
-  }
-  getMinValue() {
-    let currentNode = this;
-    while (currentNode.left !== null) {
-      currentNode = currentNode.left;
+  };
+
+  this.findFather = function (value) {
+    let currentNode = this.root;
+
+    while (true) {
+      if (!currentNode) return [];
+
+      if (currentNode.left?.value == value) {
+        return [currentNode, "left"];
+      }
+
+      if (currentNode.right?.value == value) {
+        return [currentNode, "right"];
+      }
+
+      if (value > currentNode.value) {
+        currentNode = currentNode.right;
+      } else if (value < currentNode.value) {
+        currentNode = currentNode.left;
+      } else {
+        return [this, "root"];
+      }
     }
-    return currentNode.value;
-  }
+  };
+
+  this.remove = function (value) {
+    let [fatherNode, edge] = this.findFather(value);
+    let targetNode = fatherNode && fatherNode[edge];
+
+    if (!targetNode) {
+      return false;
+    }
+    if (!targetNode.left) {
+      fatherNode[edge] = targetNode.right;
+      return this;
+    } else if (!targetNode.right) {
+      fatherNode[edge] = targetNode.left;
+      return this;
+    } else {
+      let candidate = targetNode.right;
+      while (candidate.left?.left) {
+        candidate = candidate.left;
+      }
+      targetNode.value = candidate.left.value;
+      candidate.left = candidate.left.right;
+      return this;
+    }
+  };
 }
 
-class BST {
-  constructor(value) {
-    this.value = value;
-    this.left = null;
-    this.right = null;
-  }
-  // Average: O(log(n)) time | O(log(n)) space
-  // Worst: O(n) time | O(n) space
-  insert(value) {
-    if (value < this.value) {
-      if (this.left === null) {
-        this.left = new BST(value);
-      } else {
-        this.left.insert(value);
-      }
-    } else {
-      if (this.right === null) {
-        this.right = new BST(value);
-      } else {
-        this.right.insert(value);
-      }
-    }
-    return this;
-  }
-  // Average: O(log(n)) time | O(log(n)) space
-  // Worst: O(n) time | O(n) space
-  contains(value) {
-    if (value < this.value) {
-      if (this.left === null) {
-        return false;
-      } else {
-        return this.left.contains(value);
-      }
-    } else if (value > this.value) {
-      if (this.right === null) {
-        return false;
-      } else {
-        return this.right.contains(value);
-      }
-    } else {
-      return true;
-    }
-  }
-  // Average: O(log(n)) time | O(log(n)) space
-  // Worst: O(n) time | O(n) space
-  remove(value, parent = null) {
-    if (value < this.value) {
-      if (this.left !== null) {
-        this.left.remove(value, this);
-      }
-    } else if (value > this.value) {
-      if (this.right !== null) {
-        this.right.remove(value, this);
-      }
-    } else {
-      if (this.left !== null && this.right !== null) {
-        this.value = this.right.getMinValue();
-        this.right.remove(this.value, this);
-      } else if (parent === null) {
-        if (this.left !== null) {
-          this.value = this.left.value;
-          this.right = this.left.right;
-          this.left = this.left.left;
-        } else if (this.right !== null) {
-          this.value = this.right.value;
-          this.left = this.right.left;
-          this.right = this.right.right;
-        } else {
-          // This is a single-node tree; do nothing.
-        }
-      } else if (parent.left === this) {
-        parent.left = this.left !== null ? this.left : this.right;
-      } else if (parent.right === this) {
-        parent.right = this.left !== null ? this.left : this.right;
-      }
-    }
-    return this;
-  }
-  getMinValue() {
-    if (this.left === null) {
-      return this.value;
-    } else {
-      return this.left.getMinValue();
-    }
-  }
-}
+var rootNode = new Node(10);
+var values = [7, 12, 11, 18, 20, 17, 16, 14, 15];
+
+var bst = new BST(rootNode);
+values.forEach((v) => bst.insert(v));

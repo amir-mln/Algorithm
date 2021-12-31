@@ -1,34 +1,28 @@
-function isMonotonic(arr) {
-  let dir = null;
-  let dirCheckIndex = 1;
+// redoing Medium exercises
+// input => numbers: Number[]
+// output => Boolean | '-1' | '+1'
+// we should tell if our array is monotonic which means if it is only increasing or decreasing
 
-  while (!dir) {
-    const diff = arr[dirCheckIndex] - arr[0];
-    if (diff == 0) {
-      dirCheckIndex++;
+function isMonotonic(numbers) {
+  let dir = 0;
+  for (let i = 0; i < numbers.length; i++) {
+    const currentNum = numbers[i];
+    const prevNum = numbers[i - 1];
+    const newDir = currentNum - prevNum;
+    if (!dir || (dir < 0 && newDir < 0) || (dir > 0 && newDir > 0)) {
+      dir = newDir;
       continue;
-    }
-    if (dirCheckIndex == arr.length) {
-      break;
-    }
-    dir = diff > 0 ? 1 : -1;
-  }
-
-  for (let i = 1; i < arr.length; i++) {
-    const diff = arr[i] - arr[i - 1];
-    if ((dir < 0 && diff > 0) || (dir > 0 && diff < 0)) {
+    } else {
       return false;
     }
   }
 
-  return [true, dir == 1 ? "+" : "-"];
+  return Math.sign(dir);
 }
-
 isMonotonic([2, 3, 3, 4, 5, 6, 2]);
 isMonotonic([1, 1, -1, -2, -10, -55, -853]);
 
 // AlgoExpert's solution
-
 // O(n) time | O(1) space - where n is the length of the array
 function isMonotonic(array) {
   if (array.length <= 2) return true;
