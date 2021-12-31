@@ -7,9 +7,11 @@ function sameBst(tree1, tree2) {
   if (tree1[0] !== tree2[0] || tree1.length !== tree2.length) return false;
   if (tree1.length == tree2.length && !tree1.length) return true;
 
+  //  the left branch must have smaller values
   const tree1LeftBranch = tree1.filter((v) => v < tree1[0]);
   const tree2LeftBranch = tree2.filter((v) => v < tree2[0]);
 
+  //  the right branch must have larger values
   const tree1RightBranch = tree1.filter((v) => v > tree1[0]);
   const tree2RightBranch = tree2.filter((v) => v > tree2[0]);
 
