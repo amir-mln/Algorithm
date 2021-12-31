@@ -1,14 +1,14 @@
 // my solution
-function invertTree(haedNode) {
-  if (!haedNode) return;
-  const temp = haedNode.left;
-  haedNode.left = haedNode.right;
-  haedNode.right = temp;
+function invertTree(headNode) {
+  if (!headNode) return;
+  const temp = headNode.left;
+  headNode.left = headNode.right;
+  headNode.right = temp;
 
-  invertTree(haedNode.left);
-  invertTree(haedNode.right);
+  invertTree(headNode.left);
+  invertTree(headNode.right);
 
-  return haedNode;
+  return headNode;
 }
 
 // AlgoExpert's solution
