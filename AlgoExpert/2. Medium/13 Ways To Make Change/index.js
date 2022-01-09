@@ -1,4 +1,26 @@
-// My implenmentaion of AlgoExpert's description
+// redoing medium exercises
+
+// new solution
+function waysOfMakingChange(numbers, target) {
+  if (target == 0) return [[]];
+  if (target < 0) return null;
+
+  const combinations = [];
+
+  for (let i = 0; i < numbers.length; i++) {
+    const num = numbers[i];
+    const newNumbers = numbers.slice(i);
+    const combs = waysOfMakingChange(newNumbers, target - num);
+
+    if (combs) combs.forEach((c) => combinations.push([...c, num]));
+  }
+
+  return combinations;
+}
+
+waysOfMakingChange([1, 5, 10, 25], 10);
+
+// My implementation of AlgoExpert's description
 function findWays(target, amounts) {
   const ways = new Array(target + 1).fill(0);
   ways[0] = 1;
@@ -12,18 +34,3 @@ function findWays(target, amounts) {
 }
 
 findWays(10, [1, 5, 10, 25]);
-
-// AlgoExpet's solution
-// O(nd) time | O(n) space
-function numberOfWaysToMakeChange(n, denoms) {
-  const ways = new Array(n + 1).fill(0);
-  ways[0] = 1;
-  for (let denom of denoms) {
-    for (let amount = 1; amount < n + 1; amount++) {
-      if (denom <= amount) {
-        ways[amount] += ways[amount - denom];
-      }
-    }
-  }
-  return ways[n];
-}
