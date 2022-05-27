@@ -1,12 +1,3 @@
-// my solutions
-// 1: O(n)
-function findNonRepeating(str) {
-  for (let i = 0; i < str.length; i++) {
-    const reg = new RegExp(`${str[i]}`, "g");
-    if (str.match(reg).length == 1) return i;
-  }
-}
-
 // 2: O(n)
 function findNonRepeating(str) {
   const chs = {};
